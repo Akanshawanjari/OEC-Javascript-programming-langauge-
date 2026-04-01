@@ -29,7 +29,9 @@ input,select,textarea{
 .error{
     color:red;
 }
-
+.success{
+    color:green;
+}
 button{
     background:green;
     color:white;
@@ -73,7 +75,7 @@ button{
 <label>Reason</label>
 <textarea required></textarea>
 
-<p class="error" id="msg"></p>
+<p id="msg"></p>
 
 <button type="submit">Submit</button>
 
@@ -85,7 +87,7 @@ let fromDate = document.getElementById("from");
 let toDate = document.getElementById("to");
 let days = document.getElementById("days");
 let msg = document.getElementById("msg");
-
+let form = document.getElementById("form");
 function countDays(){
 
     if(fromDate.value && toDate.value){
@@ -97,9 +99,11 @@ function countDays(){
             let diff = (d2-d1)/(1000*60*60*24)+1;
             days.value = diff;
             msg.innerHTML="";
+            msg.className="";
         }
         else{
             msg.innerHTML="To Date must be after From Date";
+            msg.className="error";
             days.value="";
         }
     }
@@ -108,16 +112,20 @@ function countDays(){
 fromDate.addEventListener("change",countDays);
 toDate.addEventListener("change",countDays);
 
-document.getElementById("form").addEventListener("submit",function(e){
-
+    form.addEventListener("submit",function(e){
+        e.preventDefault();
+        
 let d1 = new Date(fromDate.value);
 let d2 = new Date(toDate.value);
 
 if(d2 < d1){
 msg.innerHTML="Invalid Date Selection";
-e.preventDefault();
+msg.className="error";
 }
-
+else{
+    msg.innerHTML="Leave Application Submitted Successfully";
+    msg.className="success";
+}       
 });
 
 </script>
