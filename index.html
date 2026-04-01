@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Leave Application Form</title>
+
+<style>
+body{
+    font-family: Arial;
+    margin:40px;
+}
+h2{
+    text-align:center;
+}
+form{
+    width:400px;
+    margin:auto;
+    border:2px solid black;
+    padding:20px;
+    border-radius:10px;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:8px;
+    margin:6px 0;
+}
+
+.error{
+    color:red;
+}
+
+button{
+    background:green;
+    color:white;
+    padding:10px;
+    border:none;
+    width:100%;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>Leave Application</h2>
+
+<form id="form">
+
+<label>Name</label>
+<input type="text" id="name" required>
+
+<label>Employee ID</label>
+<input type="text" id="empid" required>
+
+<label>Leave Type</label>
+<select required>
+<option value="">Select</option>
+<option>Casual</option>
+<option>Sick</option>
+<option>Earned</option>
+</select>
+
+<label>From Date</label>
+<input type="date" id="from" required>
+
+<label>To Date</label>
+<input type="date" id="to" required>
+
+<label>Total Days</label>
+<input type="text" id="days" readonly>
+
+<label>Reason</label>
+<textarea required></textarea>
+
+<p class="error" id="msg"></p>
+
+<button type="submit">Submit</button>
+
+</form>
+
+<script>
+
+let fromDate = document.getElementById("from");
+let toDate = document.getElementById("to");
+let days = document.getElementById("days");
+let msg = document.getElementById("msg");
+
+function countDays(){
+
+    if(fromDate.value && toDate.value){
+
+        let d1 = new Date(fromDate.value);
+        let d2 = new Date(toDate.value);
+
+        if(d2 >= d1){
+            let diff = (d2-d1)/(1000*60*60*24)+1;
+            days.value = diff;
+            msg.innerHTML="";
+        }
+        else{
+            msg.innerHTML="To Date must be after From Date";
+            days.value="";
+        }
+    }
+}
+
+fromDate.addEventListener("change",countDays);
+toDate.addEventListener("change",countDays);
+
+document.getElementById("form").addEventListener("submit",function(e){
+
+let d1 = new Date(fromDate.value);
+let d2 = new Date(toDate.value);
+
+if(d2 < d1){
+msg.innerHTML="Invalid Date Selection";
+e.preventDefault();
+}
+
+});
+
+</script>
+
+</body>
+</html>
