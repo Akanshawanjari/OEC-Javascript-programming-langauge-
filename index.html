@@ -5,13 +5,14 @@
 
 <style>
 body{
-    
     font-family: Arial;
     margin:40px;
 }
+
 h2{
     text-align:center;
 }
+
 form{
     width:400px;
     margin:auto;
@@ -29,9 +30,11 @@ input,select,textarea{
 .error{
     color:red;
 }
+
 .success{
     color:green;
 }
+
 button{
     background:green;
     color:white;
@@ -50,13 +53,13 @@ button{
 <form id="form">
 
 <label>Name</label>
-<input type="text" id="name" required>
+<input type="text" id="name">
 
 <label>Employee ID</label>
-<input type="text" id="empid" required>
+<input type="text" id="empid">
 
 <label>Leave Type</label>
-<select required>
+<select id="leave">
 <option value="">Select</option>
 <option>Casual</option>
 <option>Sick</option>
@@ -64,16 +67,16 @@ button{
 </select>
 
 <label>From Date</label>
-<input type="date" id="from" required>
+<input type="date" id="from">
 
 <label>To Date</label>
-<input type="date" id="to" required>
+<input type="date" id="to">
 
 <label>Total Days</label>
 <input type="text" id="days" readonly>
 
 <label>Reason</label>
-<textarea required></textarea>
+<textarea id="reason"></textarea>
 
 <p id="msg"></p>
 
@@ -88,49 +91,87 @@ let toDate = document.getElementById("to");
 let days = document.getElementById("days");
 let msg = document.getElementById("msg");
 let form = document.getElementById("form");
+
 function countDays(){
 
-    if(fromDate.value && toDate.value){
+if(fromDate.value && toDate.value){
 
-        let d1 = new Date(fromDate.value);
-        let d2 = new Date(toDate.value);
+let d1 = new Date(fromDate.value);
+let d2 = new Date(toDate.value);
 
-        if(d2 >= d1){
-            let diff = (d2-d1)/(1000*60*60*24)+1;
-            days.value = diff;
-            msg.innerHTML="";
-            msg.className="";
-        }
-        else{
-            msg.innerHTML="To Date must be after From Date";
-            msg.className="error";
-            days.value="";
-        }
-    }
+if(d2 >= d1){
+
+let diff = (d2-d1)/(1000*60*60*24)+1;
+days.value = diff;
+msg.innerHTML="";
+
+}
+else{
+
+msg.innerHTML="To Date must be after From Date";
+msg.className="error";
+days.value="";
+
+}
+
+}
+
 }
 
 fromDate.addEventListener("change",countDays);
 toDate.addEventListener("change",countDays);
 
-    form.addEventListener("submit",function(e){
-        e.preventDefault();
-        
+form.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let name = document.getElementById("name").value;
+let empid = document.getElementById("empid").value;
+let leave = document.getElementById("leave").value;
+let reason = document.getElementById("reason").value;
+
 let d1 = new Date(fromDate.value);
 let d2 = new Date(toDate.value);
 
-if(d2 < d1){
-msg.innerHTML="Invalid Date Selection";
+if(name==""){
+msg.innerHTML="Name is required";
 msg.className="error";
+return;
 }
+
+if(empid==""){
+msg.innerHTML="Employee ID is required";
+msg.className="error";
+return;
+}
+
+if(leave==""){
+msg.innerHTML="Please select leave type";
+msg.className="error";
+return;
+}
+
+if(!fromDate.value || !toDate.value){
+msg.innerHTML="Please select both dates";
+msg.className="error";
+return;
+}
+
+if(d2 < d1){
+msg.innerHTML="To Date must be after From Date";
+msg.className="error";
+return;
+}
+
 if(reason==""){
-    msg.innerHTML="Reason is required";
-    msg.className="error";
-    return;
-        {
-    msg.innerHTML="Leave Application Submitted Successfully";
-    msg.className="success";
-}   
-        
+msg.innerHTML="Reason is required";
+msg.className="error";
+return;
+}
+
+msg.innerHTML="Leave Application Submitted Successfully";
+msg.className="success";
+
 });
 
 </script>
