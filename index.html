@@ -122,10 +122,15 @@ if(d2 < d1){
 msg.innerHTML="Invalid Date Selection";
 msg.className="error";
 }
-else{
+if(reason==""){
+    msg.innerHTML="Reason is required";
+    msg.className="error";
+    return;
+        {
     msg.innerHTML="Leave Application Submitted Successfully";
     msg.className="success";
-}       
+}   
+        
 });
 
 </script>
